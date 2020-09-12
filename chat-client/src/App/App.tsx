@@ -1,25 +1,40 @@
 import React from 'react'
-import logo from './logo.svg'
+import {
+  Container,
+  Paper,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+} from '@material-ui/core'
+
 import './App.css'
 
-function App() {
+const messages = [
+  { userName: 'Pedro', userMessage: 'Hi, welcome!' },
+  { userName: 'Hugo', userMessage: 'Hi, thanks! :)' },
+]
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container maxWidth="lg">
+      <Paper>
+        <List>
+          {messages.map(({ userName, userMessage }) => (
+            <ListItem>
+              <ListItemText primary={userName} secondary={userMessage} />
+            </ListItem>
+          ))}
+        </List>
+        <TextField
+          label="Your message"
+          multiline
+          fullWidth
+          rows={4}
+          variant="outlined"
+        />
+      </Paper>
+    </Container>
   )
 }
 
