@@ -16,7 +16,11 @@ const webSocketServer = new WebSocket.Server({ server })
 
 webSocketServer.on('connection', (webSocket) => {
   webSocket.on('message', (message) => {
-    webSocket.send(`You sent: ${message}`)
+    webSocketServer.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message)
+      }
+    })
   })
 
   webSocket.send('Connection Stablished!')
