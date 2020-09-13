@@ -1,7 +1,7 @@
 import amqp from 'amqplib/callback_api'
 
 const RABBITMQ_URL = 'amqp://localhost:5672'
-const QUEUE_NAME = 'shareQuoteMessage'
+const QUEUE_NAME = 'share-quotation-message'
 
 let channel = null
 
@@ -11,7 +11,7 @@ amqp.connect(RABBITMQ_URL, (err, connection) => {
   })
 })
 
-export const publishToQueue = async (data: string) => {
+export const publishToQueue = async (data: string): Promise<void> => {
   channel.assertQueue(QUEUE_NAME, {
     durable: false,
   })

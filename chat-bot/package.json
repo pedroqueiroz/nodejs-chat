@@ -1,9 +1,9 @@
 {
   "name": "chat-bot",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "dist/server.js",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "start": "tsc && node dist/server.js",
     "test": "yarn jest --watch",
     "lint:fix": "yarn prettier --write ."
   },
