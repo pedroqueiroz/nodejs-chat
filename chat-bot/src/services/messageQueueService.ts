@@ -11,7 +11,7 @@ amqp.connect(RABBITMQ_URL, (err, connection) => {
   })
 })
 
-export const publishToQueue = async (data: string): Promise<void> => {
+export const publishToQueue = (data: string): void => {
   channel.assertQueue(QUEUE_NAME, {
     durable: false,
   })

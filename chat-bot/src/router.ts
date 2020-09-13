@@ -10,12 +10,12 @@ router.get('/', (req, res) => {
   res.send('I am a bot!')
 })
 
-router.post('/share-quote', (req, res) => {
+router.post('/share-quotation', (req, res) => {
   const { stockCode } = req.body
 
   getQuotePerShare(stockCode)
-    .then(async (quote) => {
-      await publishToQueue(buildChatMessage(quote))
+    .then((quote) => {
+      publishToQueue(buildChatMessage(quote))
     })
     .catch((error) => console.log(error))
 

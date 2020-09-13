@@ -9,15 +9,15 @@ jest.mock('./services/messageQueueService')
 
 const asMock = (obj: any): jest.Mock => obj as jest.Mock
 
-describe('POST /share-quote', () => {
+describe('POST /share-quotation', () => {
   beforeEach(() => {
     asMock(getQuotePerShare).mockResolvedValue({
       title: 'AAPL.US',
       quote: '92',
     })
-    asMock(publishToQueue).mockResolvedValue(null)
+    asMock(publishToQueue).mockReturnValue(null)
   })
   it('responds with 200', function (done) {
-    request(app).post('/share-quote').expect(200, done)
+    request(app).post('/share-quotation').expect(200, done)
   })
 })
