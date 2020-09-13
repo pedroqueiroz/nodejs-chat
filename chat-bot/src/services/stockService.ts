@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ShareQuotation } from '../types'
 
 import { parseCSV } from '../utils/csvParser'
 import { buildStooqUrl } from '../utils/urlUtils'
@@ -7,7 +8,9 @@ const SHARE_ROW = 0
 const SYMBOL_COLUMN = 0
 const QUOTE_COLUMN = 6
 
-export const getQuotePerShare = async (stockCode: string) => {
+export const getQuotePerShare = async (
+  stockCode: string
+): Promise<ShareQuotation> => {
   const { data } = await axios.get(buildStooqUrl(stockCode))
 
   const parsed = parseCSV(data, true)
