@@ -13,7 +13,7 @@ describe('POST /share-quotation', () => {
   beforeEach(() => {
     asMock(getQuotePerShare).mockResolvedValue({
       title: 'AAPL.US',
-      quote: '92',
+      quote: '92'
     })
     asMock(publishToQueue).mockReturnValue(null)
   })

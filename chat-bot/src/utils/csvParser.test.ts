@@ -12,7 +12,7 @@ describe('CSV Parser', () => {
 
     expect(parsed).toEqual([
       ['Title', 'Name', 'Country'],
-      ['Lord', 'Phillip', 'England'],
+      ['Lord', 'Phillip', 'England']
     ])
   })
 })

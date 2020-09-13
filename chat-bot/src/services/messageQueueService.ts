@@ -14,7 +14,7 @@ amqp.connect(rabbitmq.url, (err, connection) => {
 
 export const publishToQueue = (data: string): void => {
   channel.assertQueue(rabbitmq.queue, {
-    durable: false,
+    durable: false
   })
 
   channel.sendToQueue(rabbitmq.queue, Buffer.from(data))

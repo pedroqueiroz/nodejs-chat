@@ -15,7 +15,7 @@ const webSocketServer = new WebSocket.Server({ server })
 const buildBotResponse = (message: string) =>
   JSON.stringify({
     userName: 'Stock Bot',
-    message,
+    message
   })
 
 const broadcastMessage = (message) => {
@@ -40,7 +40,7 @@ createConnection()
     amqp.connect(rabbitmq.url, (err, connection) => {
       connection.createChannel((err, channel) => {
         channel.assertQueue(rabbitmq.queue, {
-          durable: false,
+          durable: false
         })
 
         channel.consume(

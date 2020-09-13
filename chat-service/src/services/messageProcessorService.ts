@@ -14,7 +14,7 @@ const processCommand = async (message: string): Promise<void> => {
 
   if (isValidCommand(command)) {
     await axios.post(`${bot.url}/share-quotation`, {
-      stockCode: parsedMessage[1],
+      stockCode: parsedMessage[1]
     })
   }
 }
