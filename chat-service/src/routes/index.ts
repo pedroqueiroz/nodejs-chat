@@ -1,9 +1,9 @@
 import express from 'express'
 
+import rootRouter from './root'
+
 const router = express.Router()
 
-router.get('/', (req, res) => {
-  res.send('Hello world!')
-})
+router.use(rootRouter)
 
 export default router

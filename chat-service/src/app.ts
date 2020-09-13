@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import 'reflect-metadata'
 
-import router from './router'
+import router from './routes'
 
 const app = express()
 
