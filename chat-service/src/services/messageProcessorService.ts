@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-const BOT_URL = 'http://localhost:9000'
+import config from '../config'
+
+const { bot } = config
 
 const isCommand = (message: string): boolean => message.startsWith('/')
 
@@ -11,7 +13,7 @@ const processCommand = async (message: string): Promise<void> => {
   const command = parsedMessage[0]
 
   if (isValidCommand(command)) {
-    await axios.post(`${BOT_URL}/share-quotation`, {
+    await axios.post(`${bot.url}/share-quotation`, {
       stockCode: parsedMessage[1],
     })
   }

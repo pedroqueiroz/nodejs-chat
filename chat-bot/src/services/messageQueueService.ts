@@ -1,22 +1,23 @@
 import amqp from 'amqplib/callback_api'
 
-const RABBITMQ_URL = 'amqp://localhost:5672'
-const QUEUE_NAME = 'share-quotation-message'
+import config from '../config'
+
+const { rabbitmq } = config
 
 let channel = null
 
-amqp.connect(RABBITMQ_URL, (err, connection) => {
+amqp.connect(rabbitmq.url, (err, connection) => {
   connection.createChannel((err, thisChannel) => {
     channel = thisChannel
   })
 })
 
 export const publishToQueue = (data: string): void => {
-  channel.assertQueue(QUEUE_NAME, {
+  channel.assertQueue(rabbitmq.queue, {
     durable: false,
   })
 
-  channel.sendToQueue(QUEUE_NAME, Buffer.from(data))
+  channel.sendToQueue(rabbitmq.queue, Buffer.from(data))
 }
 
 process.on('exit', () => {

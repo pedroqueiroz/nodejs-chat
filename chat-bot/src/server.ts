@@ -1,7 +1,9 @@
 import app from './app'
 
-const PORT = 9000
+import config from './config'
 
-app.listen(PORT, () => {
-  console.log(`Started bot on port ${PORT}`)
+const { port } = config
+
+app.listen(port, () => {
+  console.log(`Started bot on port ${port}`)
 })

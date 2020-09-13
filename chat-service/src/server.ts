@@ -5,13 +5,12 @@ import { createConnection } from 'typeorm'
 
 import app from './app'
 import { processMessage } from './services/messageProcessorService'
+import config from './config'
+
+const { rabbitmq, port } = config
 
 const server = http.createServer(app)
 const webSocketServer = new WebSocket.Server({ server })
-
-const RABBITMQ_URL = 'amqp://localhost:5672'
-const QUEUE_NAME = 'share-quotation-message'
-const PORT = 8080
 
 const buildBotResponse = (message: string) =>
   JSON.stringify({
@@ -38,14 +37,14 @@ createConnection()
       webSocket.send('Connection Stablished!')
     })
 
-    amqp.connect(RABBITMQ_URL, (err, connection) => {
+    amqp.connect(rabbitmq.url, (err, connection) => {
       connection.createChannel((err, channel) => {
-        channel.assertQueue(QUEUE_NAME, {
+        channel.assertQueue(rabbitmq.queue, {
           durable: false,
         })
 
         channel.consume(
-          QUEUE_NAME,
+          rabbitmq.queue,
           (message) => {
             broadcastMessage(buildBotResponse(message.content.toString()))
           },
@@ -54,8 +53,8 @@ createConnection()
       })
     })
 
-    server.listen(PORT, () => {
-      console.log(`Server started on port ${PORT}`)
+    server.listen(port, () => {
+      console.log(`Server started on port ${port}`)
     })
   })
   .catch((error) => console.log(error))
