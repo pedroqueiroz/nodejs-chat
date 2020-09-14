@@ -14,17 +14,23 @@ import { Redirect } from 'react-router-dom'
 
 import UserMessageInput from './components/UserMessageInput/UserMessageInput'
 import { ChatMessage } from 'types'
+import useUser from 'Shared/hooks/useUser'
 
 const SERVER_ADDRESS = 'ws://localhost:8080'
-const CURRENT_USER = 'Pedro'
 
-const webSocket = new WebSocket(SERVER_ADDRESS)
+let webSocket = new WebSocket(SERVER_ADDRESS)
 
 const ChatPage: FunctionComponent = () => {
   const [isReady, setIsReady] = useState(false)
   const [messages, setMessages] = useState<Array<ChatMessage>>([])
   const [userMessage, setUserMessage] = useState<string>('')
   const [sessionExpired, setSessionExpired] = useState<boolean>(false)
+
+  const { currentUser } = useUser()
+
+  useEffect(() => {
+    webSocket = new WebSocket(SERVER_ADDRESS)
+  }, [])
 
   useEffect(() => {
     webSocket.onopen = () => setIsReady(true)
@@ -39,7 +45,7 @@ const ChatPage: FunctionComponent = () => {
       .post(
         `${config.serverUrl}/posts`,
         {
-          userName: CURRENT_USER,
+          userName: currentUser,
           message: userMessage
         },
         {
