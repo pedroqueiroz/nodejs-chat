@@ -2,7 +2,7 @@ import request from 'supertest'
 
 import app from './app'
 import { getQuotePerShare } from './services/stockService'
-import { publishToQueue } from './services/messageQueueService'
+import { publishToQueue } from './messageQueue'
 
 jest.mock('./services/stockService')
 jest.mock('./services/messageQueueService')

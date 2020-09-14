@@ -1,16 +1,18 @@
-import amqp from 'amqplib/callback_api'
+import messageQueue from 'amqplib/callback_api'
 
-import config from '../config'
+import config from './config'
 
 const { rabbitmq } = config
 
 let channel = null
 
-amqp.connect(rabbitmq.url, (err, connection) => {
-  connection.createChannel((err, thisChannel) => {
-    channel = thisChannel
+export const initMessageQueue = () => {
+  messageQueue.connect(rabbitmq.url, (_, connection) => {
+    connection.createChannel((_, thisChannel) => {
+      channel = thisChannel
+    })
   })
-})
+}
 
 export const publishToQueue = (data: string): void => {
   channel.assertQueue(rabbitmq.queue, {

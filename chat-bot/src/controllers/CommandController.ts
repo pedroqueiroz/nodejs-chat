@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import { publishToQueue } from '../services/messageQueueService'
+import { publishToQueue } from '../messageQueue'
 import { getQuotePerShare } from '../services/stockService'
 import { buildChatMessage } from '../services/chatMessageParserService'
 
