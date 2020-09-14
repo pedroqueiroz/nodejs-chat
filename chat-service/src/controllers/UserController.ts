@@ -2,19 +2,19 @@ import { Request, Response } from 'express'
 import { getRepository } from 'typeorm'
 import { validate } from 'class-validator'
 
-import { User } from '../entities/User'
+import User from '../entities/User'
 
 const UserController = {
-  listAll: async (req: Request, res: Response) => {
+  listAll: async (request: Request, response: Response) => {
     const userRepository = getRepository(User)
     const users = await userRepository.find({
       select: ['id', 'userName', 'role']
     })
 
-    res.send(users)
+    response.send(users)
   },
-  createUser: async (req: Request, res: Response) => {
-    const { userName, password, role } = req.body
+  createUser: async (request: Request, response: Response) => {
+    const { userName, password, role } = request.body
 
     const user = new User()
     user.userName = userName
@@ -24,7 +24,7 @@ const UserController = {
     const errors = await validate(user)
 
     if (errors.length > 0) {
-      res.status(400).send(errors)
+      response.status(400).send(errors)
       return
     }
 
@@ -32,11 +32,11 @@ const UserController = {
     try {
       await userRepository.save(user)
     } catch (error) {
-      res.status(409).send()
+      response.status(409).send()
       return
     }
 
-    res.status(201).send()
+    response.status(201).send()
   }
 }
 

@@ -11,7 +11,7 @@ import * as bcrypt from 'bcryptjs'
 
 @Entity()
 @Unique(['userName'])
-export class User extends BaseEntity {
+class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number
 
@@ -36,3 +36,5 @@ export class User extends BaseEntity {
     return bcrypt.compareSync(unencryptedPassword, this.password)
   }
 }
+
+export default User
