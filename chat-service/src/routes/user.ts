@@ -6,6 +6,8 @@ import { checkRole } from '../middlewares/checkRole'
 
 const router = Router()
 
+router.get('/', checkJwt, checkRole(['ADMIN']), UserController.listAll)
+
 router.post('/', checkJwt, checkRole(['ADMIN']), UserController.createUser)
 
 export default router

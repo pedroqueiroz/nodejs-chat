@@ -5,6 +5,14 @@ import { validate } from 'class-validator'
 import { User } from '../entities/User'
 
 const UserController = {
+  listAll: async (req: Request, res: Response) => {
+    const userRepository = getRepository(User)
+    const users = await userRepository.find({
+      select: ['id', 'userName', 'role']
+    })
+
+    res.send(users)
+  },
   createUser: async (req: Request, res: Response) => {
     const { userName, password, role } = req.body
 
