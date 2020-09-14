@@ -6,8 +6,11 @@ import {
   Paper,
   List,
   ListItem,
-  ListItemText,
+  ListItemText
 } from '@material-ui/core'
+import axios from 'axios'
+import config from 'Shared/config'
+import { Redirect } from 'react-router-dom'
 
 import UserMessageInput from './components/UserMessageInput/UserMessageInput'
 import { ChatMessage } from 'types'
@@ -21,6 +24,7 @@ const ChatPage: FunctionComponent = () => {
   const [isReady, setIsReady] = useState(false)
   const [messages, setMessages] = useState<Array<ChatMessage>>([])
   const [userMessage, setUserMessage] = useState<string>('')
+  const [sessionExpired, setSessionExpired] = useState<boolean>(false)
 
   useEffect(() => {
     webSocket.onopen = () => setIsReady(true)
@@ -29,6 +33,29 @@ const ChatPage: FunctionComponent = () => {
       setMessages([...messages, JSON.parse(event.data)])
     }
   })
+
+  const handleSubmit = async () => {
+    await axios
+      .post(
+        `${config.serverUrl}/posts`,
+        {
+          userName: CURRENT_USER,
+          message: userMessage
+        },
+        {
+          headers: { auth: localStorage.getItem('jwt') }
+        }
+      )
+      .catch(() => setSessionExpired(true))
+    setUserMessage('')
+  }
+
+  if (sessionExpired) {
+    localStorage.removeItem('jwt')
+    alert('Your session has expired!')
+
+    return <Redirect to="/login" />
+  }
 
   if (!isReady) {
     return (
@@ -56,15 +83,7 @@ const ChatPage: FunctionComponent = () => {
         <UserMessageInput
           userMessage={userMessage}
           setUserMessage={setUserMessage}
-          handleSubmit={() => {
-            webSocket.send(
-              JSON.stringify({
-                userName: CURRENT_USER,
-                message: userMessage,
-              })
-            )
-            setUserMessage('')
-          }}
+          handleSubmit={handleSubmit}
         />
       </Paper>
     </Container>
