@@ -16,9 +16,13 @@ import UserMessageInput from './components/UserMessageInput/UserMessageInput'
 import { ChatMessage } from 'types'
 import useUser from 'Shared/hooks/useUser'
 
-const SERVER_ADDRESS = 'ws://localhost:8080'
+let webSocket: WebSocket
 
-let webSocket = new WebSocket(SERVER_ADDRESS)
+const axiosInstance = axios.create({
+  baseURL: config.serverUrl,
+  timeout: 1000,
+  headers: { auth: localStorage.getItem('jwt') }
+})
 
 const ChatPage: FunctionComponent = () => {
   const [isReady, setIsReady] = useState(false)
@@ -29,7 +33,15 @@ const ChatPage: FunctionComponent = () => {
   const { currentUser } = useUser()
 
   useEffect(() => {
-    webSocket = new WebSocket(SERVER_ADDRESS)
+    webSocket = new WebSocket(config.webSocketServerUrl)
+
+    const fetchHistory = async () => {
+      const response = await axiosInstance.get('/posts')
+
+      setMessages(response.data)
+    }
+
+    fetchHistory()
   }, [])
 
   useEffect(() => {
@@ -41,17 +53,11 @@ const ChatPage: FunctionComponent = () => {
   })
 
   const handleSubmit = async () => {
-    await axios
-      .post(
-        `${config.serverUrl}/posts`,
-        {
-          userName: currentUser,
-          message: userMessage
-        },
-        {
-          headers: { auth: localStorage.getItem('jwt') }
-        }
-      )
+    await axiosInstance
+      .post('/posts', {
+        userName: currentUser,
+        message: userMessage
+      })
       .catch(() => setSessionExpired(true))
     setUserMessage('')
   }
