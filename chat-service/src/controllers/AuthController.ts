@@ -5,8 +5,6 @@ import { getRepository } from 'typeorm'
 import { User } from '../entities/User'
 import config from '../config'
 
-const JWT_EXPIRATION_TIME = '1h'
-
 const AuthController = {
   login: async (req: Request, res: Response) => {
     const { userName, password } = req.body
@@ -31,8 +29,8 @@ const AuthController = {
 
     const token = jwt.sign(
       { userId: user.id, userName: user.userName },
-      config.jwtSecret,
-      { expiresIn: JWT_EXPIRATION_TIME }
+      config.jwt.secret,
+      { expiresIn: config.jwt.expirationTime }
     )
 
     res.send(token)

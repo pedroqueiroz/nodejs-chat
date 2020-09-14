@@ -7,5 +7,8 @@ export default {
   bot: {
     url: 'http://localhost:9000'
   },
-  jwtSecret: 'kO^*5euKhQ1u'
+  jwt: {
+    secret: 'kO^*5euKhQ1u',
+    expirationTime: '1h'
+  }
 }
