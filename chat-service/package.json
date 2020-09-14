@@ -11,7 +11,8 @@
     "lint:fix": "yarn prettier --write .",
     "migration:create": "yarn typeorm migration:create -n",
     "premigration:run": "yarn clean && yarn build",
-    "migration:run": "ts-node ./node_modules/.bin/typeorm migration:run -t=false"
+    "migration:run": "ts-node ./node_modules/.bin/typeorm migration:run -t=false",
+    "migration:revert": "ts-node ./node_modules/.bin/typeorm migration:revert -t=false"
   },
   "repository": "git@github.com:pedroqueiroz/nodejs-chat.git",
   "author": "Pedro Queiroz <pedroqueiroz942@gmail.com>",
