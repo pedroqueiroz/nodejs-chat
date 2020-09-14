@@ -34,7 +34,13 @@ const PostService = {
     await getRepository(Post).save(post)
   },
   list: async (): Promise<Array<Post>> => {
-    return await getRepository(Post).find({ select: ['userName', 'message'] })
+    const result = await getRepository(Post).find({
+      select: ['userName', 'message'],
+      order: { timestamp: 'DESC' },
+      take: 50
+    })
+
+    return result.reverse()
   }
 }
 
