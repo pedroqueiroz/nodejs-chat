@@ -1,11 +1,10 @@
 import http from 'http'
-import { EventEmitter } from 'events'
 import { createConnection } from 'typeorm'
 
 import app from './app'
 import config from './config'
 import { initWebSocketServer } from './sockets'
-import { initBot } from './messageQueueConsumers'
+import { initBot } from './bot'
 
 const { port } = config
 
@@ -16,8 +15,6 @@ createConnection()
     server.listen(port, () => {
       console.log(`Server started on port ${port}`)
     })
-
-    const eventEmitter = new EventEmitter()
 
     initWebSocketServer(server)
     initBot()

@@ -1,14 +1,15 @@
-import amqp from 'amqplib/callback_api'
+import messageQueue from 'amqplib/callback_api'
 
 import config from './config'
 import { broadcastMessage } from './sockets'
 import { buildChatResponse } from './util/chatResponse'
 
 const { rabbitmq } = config
+const BOT_NAME = 'Bot'
 
 export const initBot = () => {
-  amqp.connect(rabbitmq.url, (err, connection) => {
-    connection.createChannel((err, channel) => {
+  messageQueue.connect(rabbitmq.url, (_, connection) => {
+    connection.createChannel((_, channel) => {
       channel.assertQueue(rabbitmq.queue, {
         durable: false
       })
@@ -18,7 +19,7 @@ export const initBot = () => {
         (message) => {
           broadcastMessage(
             buildChatResponse({
-              userName: 'Stock Bot',
+              userName: BOT_NAME,
               message: message.content.toString()
             })
           )
