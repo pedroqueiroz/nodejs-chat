@@ -8,17 +8,15 @@ const { bot } = config
 
 const isCommand = (message: string): boolean => message.startsWith('/')
 
-const isValidCommand = (command: string): boolean => command === '/stock'
-
 const processCommand = async (message: string): Promise<void> => {
   const parsedMessage = message.split('=')
-  const command = parsedMessage[0]
+  const command = parsedMessage[0].slice(1)
+  const stockCode = parsedMessage[1]
 
-  if (isValidCommand(command)) {
-    await axios.post(`${bot.url}/command/share-quotation`, {
-      stockCode: parsedMessage[1]
-    })
-  }
+  await axios.post(`${bot.url}/command`, {
+    command,
+    args: { stockCode }
+  })
 }
 
 const PostService = {
