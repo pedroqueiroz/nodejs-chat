@@ -6,7 +6,11 @@ const CommandController = {
   processQuotation: (request: Request, response: Response) => {
     const { command, args } = request.body
 
-    CommandService[command](args)
+    try {
+      CommandService[command](args)
+    } catch (error) {
+      response.status(400).send(`Wrong arguments for ${command} command!`)
+    }
 
     response.status(200).send()
   }
