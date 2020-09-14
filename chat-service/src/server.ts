@@ -19,7 +19,7 @@ createConnection()
 
     const eventEmitter = new EventEmitter()
 
-    initWebSocketServer(server, eventEmitter)
-    initBot(eventEmitter)
+    initWebSocketServer(server)
+    initBot()
   })
   .catch((error) => console.log(error))

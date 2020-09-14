@@ -1,26 +1,19 @@
 import WebSocket from 'ws'
 
-import { processMessage } from './services/messageProcessorService'
+let webSocketServer
 
-export const initWebSocketServer = (server, eventEmitter) => {
-  const webSocketServer = new WebSocket.Server({ server })
-
-  const broadcastMessage = (message) => {
-    webSocketServer.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
-        client.send(message)
-      }
-    })
-  }
+export const initWebSocketServer = (server) => {
+  webSocketServer = new WebSocket.Server({ server })
 
   webSocketServer.on('connection', (webSocket) => {
-    webSocket.on('message', async (message) => {
-      await processMessage(message).catch((error) => console.log(error))
-      broadcastMessage(message)
-    })
+    console.log('WebSocket Connection Stablished!')
+  })
+}
 
-    eventEmitter.on('newBotMessage', (message) => broadcastMessage(message))
-
-    webSocket.send('Connection Stablished!')
+export const broadcastMessage = (message) => {
+  webSocketServer.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(message)
+    }
   })
 }
