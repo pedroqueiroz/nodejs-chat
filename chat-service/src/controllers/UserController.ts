@@ -5,7 +5,7 @@ import { validate } from 'class-validator'
 import User from '../entities/User'
 
 const UserController = {
-  listAll: async (request: Request, response: Response) => {
+  listAll: async (_, response: Response) => {
     const userRepository = getRepository(User)
     const users = await userRepository.find({
       select: ['id', 'userName', 'role']
@@ -29,6 +29,7 @@ const UserController = {
     }
 
     const userRepository = getRepository(User)
+
     try {
       await userRepository.save(user)
     } catch (error) {

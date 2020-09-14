@@ -32,7 +32,7 @@ class User extends BaseEntity {
     this.password = bcrypt.hashSync(this.password, 8)
   }
 
-  checkIfUnencryptedPasswordIsValid(unencryptedPassword: string) {
+  validatePassword(unencryptedPassword: string) {
     return bcrypt.compareSync(unencryptedPassword, this.password)
   }
 }
