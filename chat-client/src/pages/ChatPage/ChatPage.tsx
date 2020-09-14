@@ -8,7 +8,7 @@ import {
   ListItem,
   ListItemText
 } from '@material-ui/core'
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import config from 'Shared/config'
 import { Redirect } from 'react-router-dom'
 
@@ -18,11 +18,7 @@ import useUser from 'Shared/hooks/useUser'
 
 let webSocket: WebSocket
 
-const axiosInstance = axios.create({
-  baseURL: config.serverUrl,
-  timeout: 1000,
-  headers: { auth: localStorage.getItem('jwt') }
-})
+let axiosInstance: AxiosInstance
 
 const ChatPage: FunctionComponent = () => {
   const [isReady, setIsReady] = useState(false)
@@ -34,6 +30,12 @@ const ChatPage: FunctionComponent = () => {
 
   useEffect(() => {
     webSocket = new WebSocket(config.webSocketServerUrl)
+
+    axiosInstance = axios.create({
+      baseURL: config.serverUrl,
+      timeout: 1000,
+      headers: { auth: localStorage.getItem('jwt') }
+    })
 
     const fetchHistory = async () => {
       const response = await axiosInstance.get('/posts')
