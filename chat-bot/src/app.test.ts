@@ -1,23 +1,26 @@
 import request from 'supertest'
 
-import app from './app'
-import { getQuotePerShare } from './services/stockService'
+import CommandService from './services/CommandService'
 import { publishToQueue } from './messageQueue'
 
-jest.mock('./services/stockService')
-jest.mock('./services/messageQueueService')
+import app from './app'
+
+jest.mock('./services/CommandService')
+jest.mock('./messageQueue')
 
 const asMock = (obj: any): jest.Mock => obj as jest.Mock
 
-describe('POST /share-quotation', () => {
+describe('POST /command', () => {
   beforeEach(() => {
-    asMock(getQuotePerShare).mockResolvedValue({
-      title: 'AAPL.US',
-      quote: '92'
-    })
+    asMock(CommandService.stock).mockReturnValue(
+      'APPL.US quote is $112 per share.'
+    )
     asMock(publishToQueue).mockReturnValue(null)
   })
   it('responds with 200', function (done) {
-    request(app).post('/share-quotation').expect(200, done)
+    request(app)
+      .post('/command')
+      .send({ command: 'stock', args: { stockCode: 'aapl.us' } })
+      .expect(200, done)
   })
 })

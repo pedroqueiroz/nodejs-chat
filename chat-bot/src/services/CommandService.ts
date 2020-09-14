@@ -1,6 +1,7 @@
 import axios from 'axios'
-import { ShareQuotation } from '../types'
 
+import { publishToQueue } from '../messageQueue'
+import { ShareQuotation } from '../types'
 import { parseCSV } from '../utils/csvParser'
 import { buildStooqUrl } from '../utils/urlUtils'
 
@@ -18,3 +19,17 @@ export const getQuotePerShare = async (
 
   return { title: row[SYMBOL_COLUMN], quote: row[QUOTE_COLUMN] }
 }
+
+const CommandService = {
+  stock: ({ stockCode }) => {
+    getQuotePerShare(stockCode)
+      .then((shareQuotation) => {
+        publishToQueue(
+          `${shareQuotation.title} quote is $${shareQuotation.quote} per share.`
+        )
+      })
+      .catch((error) => console.log(error))
+  }
+}
+
+export default CommandService

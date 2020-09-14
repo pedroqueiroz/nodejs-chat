@@ -4,6 +4,6 @@ import CommandController from '../controllers/CommandController'
 
 const router = express.Router()
 
-router.post('/share-quotation', CommandController.processQuotation)
+router.post('/', CommandController.processQuotation)
 
 export default router

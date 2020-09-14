@@ -1,18 +1,12 @@
 import { Request, Response } from 'express'
 
-import { publishToQueue } from '../messageQueue'
-import { getQuotePerShare } from '../services/stockService'
-import { buildChatMessage } from '../services/chatMessageParserService'
+import CommandService from '../services/CommandService'
 
 const CommandController = {
   processQuotation: (request: Request, response: Response) => {
-    const { stockCode } = request.body
+    const { command, args } = request.body
 
-    getQuotePerShare(stockCode)
-      .then((quote) => {
-        publishToQueue(buildChatMessage(quote))
-      })
-      .catch((error) => console.log(error))
+    CommandService[command](args)
 
     response.status(200).send()
   }
