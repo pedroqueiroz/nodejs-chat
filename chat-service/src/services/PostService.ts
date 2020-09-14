@@ -15,8 +15,7 @@ const processCommand = async (message: string): Promise<void> => {
   const command = parsedMessage[0]
 
   if (isValidCommand(command)) {
-    console.log('mandou a mensagem!')
-    await axios.post(`${bot.url}/share-quotation`, {
+    await axios.post(`${bot.url}/command/share-quotation`, {
       stockCode: parsedMessage[1]
     })
   }
