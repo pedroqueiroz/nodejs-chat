@@ -11,7 +11,7 @@ const PostController = {
     const { userName, message } = request.body
 
     const post = new Post()
-    post.author = userName
+    post.userName = userName
     post.message = message
     post.timestamp = new Date()
 
@@ -27,6 +27,9 @@ const PostController = {
     broadcastMessage(buildChatResponse({ userName, message }))
 
     response.status(200).send()
+  },
+  list: async (request: Request, response: Response) => {
+    response.status(200).json(await PostService.list())
   }
 }
 

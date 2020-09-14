@@ -31,7 +31,10 @@ const PostService = {
       return
     }
 
-    getRepository(Post).save(post)
+    await getRepository(Post).save(post)
+  },
+  list: async (): Promise<Array<Post>> => {
+    return await getRepository(Post).find({ select: ['userName', 'message'] })
   }
 }
 
