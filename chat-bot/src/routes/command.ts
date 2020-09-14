@@ -1,21 +1,9 @@
 import express from 'express'
 
-import { publishToQueue } from '../services/messageQueueService'
-import { getQuotePerShare } from '../services/stockService'
-import { buildChatMessage } from '../services/chatMessageParserService'
+import CommandController from '../controllers/CommandController'
 
 const router = express.Router()
 
-router.post('/share-quotation', (req, res) => {
-  const { stockCode } = req.body
-
-  getQuotePerShare(stockCode)
-    .then((quote) => {
-      publishToQueue(buildChatMessage(quote))
-    })
-    .catch((error) => console.log(error))
-
-  res.status(200).send()
-})
+router.post('/share-quotation', CommandController.processQuotation)
 
 export default router
