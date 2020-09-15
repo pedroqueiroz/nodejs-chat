@@ -41,6 +41,7 @@ Considering you already put up the chat-service:
 
 1. Using postman or curl, send a post request to `localhost:8080/auth/login` sending the admins credentials as body.
 
+body (JSON):
 ```
 {
 	"userName": "admin",
@@ -48,20 +49,31 @@ Considering you already put up the chat-service:
 }
 ```
 
-2. Copy the JWT token that comes as response from the previous request
+2. Now you should be logged in to the service! Copy the JWT token that comes as response from the previous request, you'll use it on the next step.
 3. Send another post request to `localhost:8080/user` sending the credentials you want to create, also send the jwt as a auth header.
 
-body:
+header:
+`auth: <YOUR JWT>`
+
+body (JSON):
 
 ```
 {
 	"userName": "foo",
 	"password": "bar",
-  "role": "USER"
+  	"role": "USER"
 }
 ```
 
-header:
-`auth: <YOUR JWT>`
-
 4. The user has been created!
+
+### How to use the app
+
+1. Once you started everything, go to `localhost:3000`
+2. You should see a login page
+3. Enter the credentials and submit
+4. You should see the chat pages. All messages there will be broadcasted to you and other logged in folks.
+5. We display the last 50 messages as history once you log in.
+6. You can send commands to our bot by using `/stock=<stock title>`
+
+
