@@ -8,6 +8,7 @@ import { buildStooqUrl } from '../utils/urlUtils'
 const SHARE_ROW = 0
 const SYMBOL_COLUMN = 0
 const QUOTE_COLUMN = 6
+const EMPTY_COLUMN = 'N/D'
 
 export const getQuotePerShare = async (
   stockCode: string
@@ -17,7 +18,13 @@ export const getQuotePerShare = async (
   const parsed = parseCSV(data, true)
   const row = parsed[SHARE_ROW]
 
-  return { title: row[SYMBOL_COLUMN], quote: row[QUOTE_COLUMN] }
+  const quote = row[QUOTE_COLUMN]
+
+  if (quote === EMPTY_COLUMN) {
+    throw new Error('No quotation found for this stock code :(')
+  }
+
+  return { title: row[SYMBOL_COLUMN], quote }
 }
 
 const CommandService = {
@@ -28,7 +35,7 @@ const CommandService = {
           `${shareQuotation.title} quote is $${shareQuotation.quote} per share.`
         )
       })
-      .catch((error) => console.log(error))
+      .catch((error) => publishToQueue(error.message))
   }
 }
 
